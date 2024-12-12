@@ -3,7 +3,7 @@ Description=ByeDPI service
 After=network.target
 
 [Service]
-ExecStart=/home/phosphorus/.bin/byedpi --fake 1 --disorder 3 --auto=torst --tlsrec 1+s -p 5244
+ExecStart=/home/phosphorus/.bin/byedpi --fake 1 --disorder 3 --auto=torst --tlsrec 1+s -p 5200
 Type=simple
 Restart=always
 
