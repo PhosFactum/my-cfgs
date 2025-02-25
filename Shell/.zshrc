@@ -144,7 +144,7 @@ alias ch37='chmod 777'      # same
 alias um='uname -m'
 alias du='du -h'
 alias free='free -m'
-alias untar='tar -zxvf'
+alias untar='tar -xvf'
 alias wifi='nmcli dev wifi connect'
 
 
