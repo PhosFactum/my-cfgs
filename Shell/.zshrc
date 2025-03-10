@@ -20,6 +20,7 @@ fi
 ### Exports ###
 
 export EDITOR=/usr/bin/vim
+export PIP_REQUIRE_VIRTUALENV=false
 
 
 ##### Aliases #####
@@ -131,8 +132,11 @@ alias gitch="git checkout"
 
 # Python
 alias py="python3"
+alias pipu="python3 -m pip install --upgrade pip"
+alias venv="python -m venv .venv && source .venv/bin/activate && pip install --upgrade pip"
 alias newvenv="python3 -m venv .venv"
 alias actvenv="source .venv/bin/activate"
+alias deact="deactivate"
 alias pipu="pip install --upgrade pip"
 alias pipl="pip list"
 alias nrun="nodemon"
@@ -175,6 +179,7 @@ alias book_lott="zathura $book_dir/lott-oop_python.pdf"
 
 PATH=${PATH}:~/.bin
 export PATH
+
 
 # Pomodoro #
 function pomo() {
