@@ -162,6 +162,7 @@ alias bashcp="cp ~/.bashrc ~/.my-cfgs/Shell/"
 alias shellcp="zshcp; bashcp"
 alias cpmake="cp ~/Education/Stolyarov/Pascal/makefile ."
 alias saveit="cat >> ~/Education/Materials/Saved_Links"
+alias paste='xclip -selection clipboard -o > '
 
 # Books
 book_dir="~/Education/Materials/Books"
