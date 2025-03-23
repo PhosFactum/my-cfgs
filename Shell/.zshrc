@@ -140,7 +140,9 @@ alias deact="deactivate"
 alias pipu="pip install --upgrade pip"
 alias pipl="pip list"
 alias nrun="nodemon"
-alias poetrun="poetry run python main.py"
+alias poetrun="poetry run python"
+alias poetrunuvi="poetry run uvicorn $1 --reload"alias paste="xsel --clipboard --output > "
+
 
 # System utilities
 alias chx="chmod +x"        # won"t work on local user"s cfg
@@ -162,7 +164,8 @@ alias bashcp="cp ~/.bashrc ~/.my-cfgs/Shell/"
 alias shellcp="zshcp; bashcp"
 alias cpmake="cp ~/Education/Stolyarov/Pascal/makefile ."
 alias saveit="cat >> ~/Education/Materials/Saved_Links"
-alias paste='xclip -selection clipboard -o > '
+alias paste="xclip -selection clipboard -o > "
+alias pyste="paste main.py; py main.py"
 
 # Books
 book_dir="~/Education/Materials/Books"
