@@ -142,6 +142,7 @@ alias pipl="pip list"
 alias nrun="nodemon"
 alias poetrun="poetry run python"
 alias poetrunuvi="poetry run uvicorn $1 --reload"alias paste="xsel --clipboard --output > "
+alias uvicorn="uvicorn main:app --reload"
 
 
 # System utilities
