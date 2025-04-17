@@ -106,9 +106,7 @@ alias base="lobase"
 alias draw="lodraw"
 alias pdf="zathura"
 
-## Git ##
-
-# Git (short)
+# Git
 alias gita="git add"
 alias gita.="git add ."
 alias gitb="git branch"
@@ -134,19 +132,20 @@ alias venv="python -m venv .venv && source .venv/bin/activate && pip install --u
 alias newvenv="python3 -m venv .venv"
 alias actvenv="source .venv/bin/activate"
 alias deact="deactivate"
-alias pipu="pip install --upgrade pip"
 alias pipl="pip list"
 alias nrun="nodemon"
 alias poetrun="poetry run python"
 
 # System utilities
-alias untar="tar -xvf"
+alias targz="tar -czvf"  # better speed
+alias tarxz="tar -cJvf"  # better compress
+alias untar="tar -xvf"   # universal
 alias wifi="nmcli dev wifi connect"
 
 
 # Compilation
-alias makeclean="make; make clean"  # makefiles make and clean at one action
-alias clean="make clean"       # make only clean
+alias makeclean="make; make clean"
+alias clean="make clean"
 
 # Other
 alias zshcp="cp ~/.zshrc ~/.my-cfgs/Shell/"
