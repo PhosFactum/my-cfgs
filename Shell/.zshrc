@@ -1,29 +1,33 @@
+#####   SYSTEM INFO   #####
+
 # Use powerline
 USE_POWERLINE="true"
-# Has weird character width
-# Example:
-#    is not a diamond
+
+# Use widesymbols in terminal
 HAS_WIDECHARS="false"
+
 # Source manjaro-zsh-configuration
 if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
   source /usr/share/zsh/manjaro-zsh-config
 fi
+
 # Use manjaro zsh prompt
 if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
   source /usr/share/zsh/manjaro-zsh-prompt
 fi
-# Starting tmux
-#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-#fi
 
-### Exports ###
+
+
+#####   EXPORTS   #####
 
 export EDITOR=/usr/bin/vim
 export PIP_REQUIRE_VIRTUALENV=false
+PATH=${PATH}:~/.bin
+export PATH
 
 
-##### Aliases #####
+
+#####   ALIASES   #####
 
 # Commands
 alias rmrf="rm -rf"
@@ -37,10 +41,8 @@ alias cd..="cd .."
 alias cd/="cd /"
 alias cd-="cd -"
 alias cpr="cp -r"
-alias s="cat"
 alias md="mkdir"
-alias m="mv"
-alias s!="sudo !!"
+alias s!!="sudo !!"
 alias dcd="cd /etc/systemd/system/; ls"
 alias dls="ls /etc/systemd/system/"
 
@@ -53,7 +55,6 @@ alias tvimconf="nvim ~/.config/tvim/init.lua"
 alias tvimcp="cp -r ~/.config/tvim ~/.my-cfgs/Editor/"
 alias plan="bat --paging=never ~/Diary/personal/daily/$(date +\%Y)/$(date +\%m)/$(date +\%d).md"
 alias today="tvim ~/Diary/personal/daily/$(date +\%Y)/$(date +\%m)/$(date +\%d).md"
-
 
 # Package managers
 alias yi="yay -S"
@@ -73,6 +74,8 @@ alias denable="sudo systemctl enable"
 alias ddisable="sudo systemctl disable"
 alias dunmask="sudo systemctl unmask"
 alias drestart="sudo systemctl restart"
+
+# VPN (Adguard)
 alias vpnon="adguardvpn-cli connect"
 alias vpnoff="adguardvpn-cli disconnect"
 alias vpnstatus="adguardvpn-cli status"
@@ -94,9 +97,7 @@ alias pstatus="pomodoro status"
 alias pbreak="pomodoro break"
 alias prepeat="pomodoro repeat"
 
-################
-
-# Office 
+# LibreOffice
 alias writer="loffice"
 alias impress="loimpress"
 alias calc="localc"
@@ -110,25 +111,21 @@ alias pdf="zathura"
 # Git (short)
 alias gita="git add"
 alias gita.="git add ."
-alias gitd="git diff"
 alias gitb="git branch"
 alias gitc="git commit"
 alias gitc-m="git commit -m"
 alias gitc--amend="git commit --amend"
 alias gits="git status"
-
-# Git (less short :D)
 alias gitlog="git log"
 alias gitrm="git rm"
 alias gitmv="git mv"
 alias gitclean="git clean"
 alias gitpush="git push"
 alias gitpushf="git push -f"
+alias gitpushfwl="git push --force-with-lease"
 alias gitpull="git pull"
 alias gitsw="git switch"
 alias gitch="git checkout"
-
-#########
 
 # Python
 alias py="python3"
@@ -142,13 +139,7 @@ alias pipl="pip list"
 alias nrun="nodemon"
 alias poetrun="poetry run python"
 
-
 # System utilities
-alias chx="chmod +x"        # won"t work on local user"s cfg
-alias ch37="chmod 777"      # same
-alias um="uname -m"
-alias du="du -h"
-alias free="free -m"
 alias untar="tar -xvf"
 alias wifi="nmcli dev wifi connect"
 
@@ -178,13 +169,10 @@ alias book_lyubanovich="zathura $book_dir/lyubanovich-python.pdf"
 alias book_lott="zathura $book_dir/lott-oop_python.pdf"
 
 
-### Paths ###
 
-PATH=${PATH}:~/.bin
-export PATH
+#####   OTHERS   #####
 
-
-# Pomodoro #
+# Pomodoro function
 function pomo() {
     arg1=$1
     shift
@@ -198,5 +186,3 @@ function pomo() {
         sleep "${sec:?}" && echo "${msg:?}" && notify-send -u critical -t 0 "${msg:?}"
     done
 }
-
-source ~/.bash_profile
