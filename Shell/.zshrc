@@ -20,10 +20,18 @@ fi
 
 #####   EXPORTS   #####
 
+# System
 export EDITOR=/usr/bin/vim
+export PATH=${PATH}:~/.bin
+
+# Python
 export PIP_REQUIRE_VIRTUALENV=false
-PATH=${PATH}:~/.bin
-export PATH
+
+# Golang
+export GOROOT="$HOME/.go/go"
+export GOPATH="$HOME/.go"
+export GOMODCACHE="$HOME/.go/pkg/mod"
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 
 
 
@@ -69,6 +77,7 @@ alias pdc="sudo pacman -Rns"
 # Daemons
 alias dreload="sudo systemctl daemon-reload"
 alias dstart="sudo systemctl start"
+alias dstop="sudo systemctl stop"
 alias dstatus="sudo systemctl status"
 alias denable="sudo systemctl enable"
 alias ddisable="sudo systemctl disable"
@@ -140,12 +149,14 @@ alias poetrun="poetry run python"
 alias targz="tar -czvf"  # better speed
 alias tarxz="tar -cJvf"  # better compress
 alias untar="tar -xvf"   # universal
+alias 7zip="7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on"
 alias wifi="nmcli dev wifi connect"
-
 
 # Compilation
 alias makeclean="make; make clean"
 alias clean="make clean"
+alias compose="docker-compose up --build"
+alias decompose="docker-compose down"
 
 # Other
 alias zshcp="cp ~/.zshrc ~/.my-cfgs/Shell/"
@@ -166,6 +177,14 @@ alias book_msu="zathura $book_dir/msu-oop.pdf"
 alias book_shotts="zathura $book_dir/shotts-linux_cli.pdf"
 alias book_lyubanovich="zathura $book_dir/lyubanovich-python.pdf"
 alias book_lott="zathura $book_dir/lott-oop_python.pdf"
+alias book_postgres="zathura $book_dir/postgres-docs.pdf"
+
+# PostgreSQL
+alias psqlu="psql -U postgres"
+
+# Golang
+alias grun="go run ./cmd/main.go"
+alias reswag="swag init -g ./cmd/main.go"
 
 
 
