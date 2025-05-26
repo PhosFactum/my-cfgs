@@ -26,6 +26,7 @@ export PATH=${PATH}:~/.bin
 
 # Python
 export PIP_REQUIRE_VIRTUALENV=false
+export PYTHONPATH="$PYTHONPATH:$(pwd)/src"
 
 # Golang
 export GOROOT="$HOME/.go/go"
@@ -96,6 +97,7 @@ alias ph="viewnior"
 alias gdb="gdb -x ~/.gdbinit"
 alias g="gdb"
 alias nd="nodemon"
+alias lsof="sudo lsof -i"
 
 # Pomodoro
 alias p="pomodoro"
@@ -144,6 +146,7 @@ alias deact="deactivate"
 alias pipl="pip list"
 alias nrun="nodemon"
 alias poetrun="poetry run python"
+alias reqs="pip install -r requirements.txt"
 
 # System utilities
 alias targz="tar -czvf"  # better speed
@@ -186,9 +189,12 @@ alias psqlu="psql -U postgres"
 alias grun="go run ./cmd/main.go"
 alias reswag="swag init -g ./cmd/main.go"
 
+# OrangePi
+alias orange="ssh orange -t /usr/bin/bash"
 
 
-#####   OTHERS   #####
+
+#####   FUNCTIONS   #####
 
 # Pomodoro function
 function pomo() {
