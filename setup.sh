@@ -125,8 +125,8 @@ for script in "$CFG_DIR/Shell/bin/"*; do
   [ -f "$script" ] && ln -sf "$script" "$BIN_DIR/$(basename "$script")"
 done
 
-# 8. Создание ссылок на директории для nvim и tvim
-echo "Создаём символические ссылки для nvim и tvim..."
+# 8. Создание ссылок на директории для nvim
+echo "Создаём символические ссылки для nvim..."
 cp -r "$CFG_DIR/Editor/nvim" "$CONFIG_DIR/nvim"
 
 # Установка lazy.nvim, если еще не установлено
@@ -143,22 +143,6 @@ nvim +LazySync +qa
 echo "Настроим kbct с помощью скрытого скрипта..."
 bash "$HOME/.my-cfgs/Shell/bin/kbct.sh"
 
-# 10. Установка и настройка byedpi
-echo "Устанавливаем byedpi..."
-BYEDPI_LATEST=$(curl -sL "$BYEDPI_REPO/releases/latest" | grep -oP 'href="\K.*?byedpi.*?linux.*?tar.gz(?=")')
-BYEDPI_URL="https://github.com${BYEDPI_LATEST}"
-curl -L -o /tmp/byedpi.tar.gz "$BYEDPI_URL"
-sudo tar -xzf /tmp/byedpi.tar.gz -C /usr/local/bin
-sudo chmod +x /usr/local/bin/byedpi
-sudo ln -sf /usr/local/bin/byedpi /usr/bin/byedpi
-
-# Перемещаем демон byedpi.service
-echo "Перемещаем byedpi.service..."
-sudo ln -sf "$CFG_DIR/Utilities/byedpi/byedpi.service" /etc/systemd/system/byedpi.service
-sudo systemctl daemon-reload
-sudo systemctl enable byedpi.service
-sudo systemctl start byedpi.service
-
 # Завершение
 echo "Для создания шортката для переключения тачпада в GNOME, введите следующую команду в настройках клавиатуры (в разделе 'Горячие клавиши' -> 'Добавить'):"
 echo "$HOME/.bin/toggle-touchpad"
@@ -167,10 +151,4 @@ echo "Запускаем display-gnome-layout..."
 
 # Удаляем директорию my-cfgs
 echo "Удаляем директорию $HOME/my-cfgs..."
-rm -rf "$HOME/my-cfgs"
-
-# Инструкция для установки AdGuard VPN CLI
-echo "Если вам нужно установить AdGuard VPN CLI, введите следующие команды:"
-echo "1. curl -L -o \$HOME/Downloads/adguardvpn-cli.tar.gz 'https://github.com<ADGUARD_URL>'"
-echo "2. tar -xzf \$HOME/Downloads/adguardvpn-cli.tar.gz -C \$HOME/Downloads"
-echo "3. sudo mv \$HOME/Downloads/adguardvpn-cli /usr/local/bin/"
+mv my-cfgs .my-cfgs
