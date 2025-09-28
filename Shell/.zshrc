@@ -72,7 +72,7 @@ alias ydc="yay -Rns"
 alias pi="sudo pacman -S"
 alias pu="sudo pacman -Syu"
 alias pd="sudo pacman -Rs"
-alias pdc="sudo pacman -Rns"
+alias pdd="sudo pacman -Rns"
 
 # Daemons
 alias dreload="sudo systemctl daemon-reload"
@@ -144,8 +144,16 @@ alias actvenv="source .venv/bin/activate"
 alias deact="deactivate"
 alias pipl="pip list"
 alias nrun="nodemon"
-alias poetrun="poetry run python"
 alias reqs="pip install -r requirements.txt"
+
+# Poetry
+alias poetrun="poetry run python"
+alias poetshell="eval $(poetry env activate)"
+alias poetinit="poetry init"
+alias poetnew="poetry new"
+alias poetadd="poetry add"
+alias poetinst="poetry install"
+alias poetshow="poetry show --tree"
 
 # System utilities
 alias targz="tar -czvf"  # better speed
