@@ -6,17 +6,6 @@ USE_POWERLINE="true"
 # Use widesymbols in terminal
 HAS_WIDECHARS="false"
 
-# Source manjaro-zsh-configuration
-if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-  source /usr/share/zsh/manjaro-zsh-config
-fi
-
-# Use manjaro zsh prompt
-if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-  source /usr/share/zsh/manjaro-zsh-prompt
-fi
-
-
 
 #####   EXPORTS   #####
 
@@ -148,7 +137,7 @@ alias reqs="pip install -r requirements.txt"
 
 # Poetry
 alias poetrun="poetry run python"
-alias poetshell="eval $(poetry env activate)"
+alias poetshell="poetry env activate"
 alias poetinit="poetry init"
 alias poetnew="poetry new"
 alias poetadd="poetry add"

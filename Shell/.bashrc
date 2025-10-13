@@ -1,6 +1,4 @@
 #
-# ~/.bashrc
-#
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -107,7 +105,6 @@ alias la='ls -a'
 alias l='ls'
 alias c='cd'
 alias c..='cd ..'
-alias c/='cd /'
 alias c-='cd -'
 alias s='cat'
 alias md='mkdir'

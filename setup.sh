@@ -5,7 +5,6 @@ REPO_URL="https://github.com/PhosFactum/my-cfgs"
 CFG_DIR="$HOME/.my-cfgs"
 BIN_DIR="$HOME/.bin"
 CONFIG_DIR="$HOME/.config"
-BYEDPI_REPO="https://github.com/hufrea/byedpi"
 XDG_CONFIG="$CFG_DIR/System/user-dirs.dirs"
 DOWNLOAD_DIR="$HOME/Downloads"
 
@@ -75,10 +74,6 @@ if ! command -v tmux &>/dev/null; then
   echo "Ошибка при установке tmux."
 fi
 
-if ! command -v gdb &>/dev/null; then
-  echo "Ошибка при установке gdb."
-fi
-
 if ! command -v telegram-desktop &>/dev/null; then
   echo "Ошибка при установке telegram-desktop."
 fi
@@ -104,19 +99,10 @@ else
   echo "Файл user-dirs.dirs не найден в репозитории!"
 fi
 
-# 5. Клонирование репозитория конфигураций
-if [ ! -d "$CFG_DIR" ]; then
-  echo "Клонируем репозиторий конфигураций..."
-  git clone "$REPO_URL" "$CFG_DIR"
-else
-  echo "Репозиторий конфигураций уже клонирован."
-fi
-
 # 6. Создание символических ссылок для конфигов
 echo "Создаём символические ссылки для конфигурационных файлов..."
 ln -sf "$CFG_DIR/Shell/.bashrc" "$HOME/.bashrc"
 ln -sf "$CFG_DIR/Shell/.zshrc" "$HOME/.zshrc"
-sudo ln -sf "$CFG_DIR/Keyboard/gnome.cfg" "/etc/gnome.cfg"
 sudo ln -sf "$CFG_DIR/Keyboard/kbct.yaml" "/etc/kbct.yaml"
 
 # 7. Создание ссылок на скрипты в .bin
@@ -125,8 +111,8 @@ for script in "$CFG_DIR/Shell/bin/"*; do
   [ -f "$script" ] && ln -sf "$script" "$BIN_DIR/$(basename "$script")"
 done
 
-# 8. Создание ссылок на директории для nvim и tvim
-echo "Создаём символические ссылки для nvim и tvim..."
+# 8. Создание ссылок на директории для nvim
+echo "Создаём символические ссылки для nvim..."
 cp -r "$CFG_DIR/Editor/nvim" "$CONFIG_DIR/nvim"
 
 # Установка lazy.nvim, если еще не установлено
@@ -143,34 +129,11 @@ nvim +LazySync +qa
 echo "Настроим kbct с помощью скрытого скрипта..."
 bash "$HOME/.my-cfgs/Shell/bin/kbct.sh"
 
-# 10. Установка и настройка byedpi
-echo "Устанавливаем byedpi..."
-BYEDPI_LATEST=$(curl -sL "$BYEDPI_REPO/releases/latest" | grep -oP 'href="\K.*?byedpi.*?linux.*?tar.gz(?=")')
-BYEDPI_URL="https://github.com${BYEDPI_LATEST}"
-curl -L -o /tmp/byedpi.tar.gz "$BYEDPI_URL"
-sudo tar -xzf /tmp/byedpi.tar.gz -C /usr/local/bin
-sudo chmod +x /usr/local/bin/byedpi
-sudo ln -sf /usr/local/bin/byedpi /usr/bin/byedpi
-
-# Перемещаем демон byedpi.service
-echo "Перемещаем byedpi.service..."
-sudo ln -sf "$CFG_DIR/Utilities/byedpi/byedpi.service" /etc/systemd/system/byedpi.service
-sudo systemctl daemon-reload
-sudo systemctl enable byedpi.service
-sudo systemctl start byedpi.service
 
 # Завершение
 echo "Для создания шортката для переключения тачпада в GNOME, введите следующую команду в настройках клавиатуры (в разделе 'Горячие клавиши' -> 'Добавить'):"
 echo "$HOME/.bin/toggle-touchpad"
-echo "Запускаем display-gnome-layout..."
-"$HOME/.bin/display-gnome-layout"
 
 # Удаляем директорию my-cfgs
 echo "Удаляем директорию $HOME/my-cfgs..."
 rm -rf "$HOME/my-cfgs"
-
-# Инструкция для установки AdGuard VPN CLI
-echo "Если вам нужно установить AdGuard VPN CLI, введите следующие команды:"
-echo "1. curl -L -o \$HOME/Downloads/adguardvpn-cli.tar.gz 'https://github.com<ADGUARD_URL>'"
-echo "2. tar -xzf \$HOME/Downloads/adguardvpn-cli.tar.gz -C \$HOME/Downloads"
-echo "3. sudo mv \$HOME/Downloads/adguardvpn-cli /usr/local/bin/"
