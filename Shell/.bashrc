@@ -240,7 +240,7 @@ book() {
     else
 	echo "--- File was not found! ---"
 	echo "Available books:"
-	ls "$dir" | sed 's/\.pdf$//' | column
+        ls "$dir" | sed 's/\.pdf$//' | tr ' ' '\n'
     fi
 }
 
