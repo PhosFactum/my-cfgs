@@ -90,62 +90,60 @@ fi
 
 unset use_color safe_term match_lhs sh
 
-### Exports ###
 
-export EDITOR=/usr/bin/vim
+
 
 ##### Aliases #####
 
-# Commands
+### Commands
+
 alias rmrf='rm -rf'
 alias rd='rmdir'
 alias lla='ls -la'
 alias ll='ls -l'
 alias la='ls -a'
 alias l='ls'
-alias c='cd'
-alias c..='cd ..'
-alias c-='cd -'
-alias s='cat'
+alias cd..='cd ..'
+alias cd-='cd -'
 alias md='mkdir'
-alias m='mv'
-alias s!='sudo !!'
-alias dcd='cd /etc/systemd/system/; ls'
-alias dls='ls /etc/systemd/system/'
+alias s!!='sudo !!'
+alias cddaemon='cd /etc/systemd/system/; ls'
+alias lsdaemon='ls /etc/systemd/system/'
 
-# Configs
-alias z='nvim ~/.zshrc; source ~/.zshrc; zshcp'
-alias bashrc='nvim ~/.bashrc; source ~/.bashrc; bashcp'
-alias tmuxrc='nvim ~/.tmux.conf; source ~/.tmux.conf'
 
-# Package managers
-alias yi='yay -S'
-alias yu='yay -Syu'
-alias yd='yay -Rs'
-alias ydc='yay -Rns'
-alias pi='sudo pacman -S'
-alias pu='sudo pacman -Syu'
-alias pd='sudo pacman -Rs'
-alias pdc='sudo pacman -Rns'
+### Configs
 
-# Daemons
+alias bashrc='vim ~/.bashrc; source ~/.bashrc'
+alias zshrc='vim ~/.zshrc; source ~/.zshrc'
+alias tmuxrc='vim ~/.tmux.conf; source ~/.tmux.conf'
+
+
+### Package managers
+
+alias yays='yay -S'
+alias yaysyu='yay -Syu'
+alias yayr='yay -R'
+alias yayrs='yay -Rs'
+alias yayrns='yay -Rns'
+alias pacs='sudo pacman -S'
+alias pacsyu='sudo pacman -Syu'
+alias pacr='sudo pacman -R'
+alias pacrs='sudo pacman -Rs'
+alias pacrns='sudo pacman -Rns'
+
+
+### Daemons
+
 alias dreload='sudo systemctl daemon-reload'
 alias dstart='sudo systemctl start'
 alias dstatus='sudo systemctl status'
 alias denable='sudo systemctl enable'
 alias ddisable='sudo systemctl disable'
-alias vpnon='adguardvpn-cli connect'
-alias vpnoff='adguardvpn-cli disconnect'
-alias vpn='adguardvpn-cli status'
+alias drestart='sudo systemctl restart'
 
-##  Utilities ##
-alias ph='viewnior'
-alias gdb='gdb -x ~/.gdbinit'
-alias g='gdb'
-alias nd='nodemon'
 
-# Pomodoro
-alias p='pomodoro'
+### Pomodoro
+
 alias pstart='pomodoro start --duration'
 alias pstop='pomodoro finish'
 alias pcan='pomodoro cancel'
@@ -153,9 +151,9 @@ alias pstatus='pomodoro status'
 alias pbreak='pomodoro break'
 alias prepeat='pomodoro repeat'
 
-################
 
-# Office
+### Office
+
 alias writer='loffice'
 alias impress='loimpress'
 alias calc='localc'
@@ -164,9 +162,9 @@ alias base='lobase'
 alias draw='lodraw'
 alias pdf='zathura'
 
-## Git ##
 
-# Git (short)
+### Git
+
 alias gita='git add'
 alias gita.='git add .'
 alias gitd='git diff'
@@ -175,8 +173,6 @@ alias gitc='git commit'
 alias gitc-m='git commit -m'
 alias gitc--amend='git commit --amend'
 alias gits='git status'
-
-# Git (less short :D)
 alias gitlog='git log'
 alias gitrm='git rm'
 alias gitmv='git mv'
@@ -187,47 +183,69 @@ alias gitpull='git pull'
 alias gitsw='git switch'
 alias gitch='git checkout'
 
-#########
 
-# Python
+### Python
+
 alias py='python3'
 alias newvenv='python3 -m venv .venv'
 alias actvenv='source .venv/bin/activate'
 
-# System utilities
+
+### System utilities
+
 alias chx='chmod +x'   # won't work on local user's cfg
-alias ch37='chmod 777' # same
-alias um='uname -m'
 alias du='du -h'
 alias free='free -m'
 alias untar='tar -zxvf'
 alias wifi='nmcli dev wifi connect'
 
-# Else
-alias mc='make; make clean' # makefiles make and clean at one action
-alias moc='make clean'      # make only clean
 
-# Lmao aliases
-alias zshcp='cp ~/.zshrc ~/.my-cfgs/Shell/'
-alias bashcp='cp ~/.bashrc ~/.my-cfgs/Shell/'
-alias shellcp='zshcp; bashcp'
+### Hyprland
+alias hyprconf='vim ~/.config/hypr/hyprland.conf'
+alias hyprkeys='vim ~/.config/hypr/keybind.conf'
 
-# Books
-alias book_stolyarov1='zathura ~/Education/Materials/Books/progintro_e2v1.pdf'
-alias book_stolyarov2='zathura ~/Education/Materials/Books/progintro_e2v2.pdf'
-alias book_stolyarov3='zathura ~/Education/Materials/Books/progintro_e2v3.pdf'
-alias book_swaroop='zathura ~/Education/Materials/Books/swaroop-byte_of_python.pdf'
-alias book_msu='zathura ~/Education/Materials/Books/msu-python_oop.pdf'
 
-# My custom scripts
-alias saveit='cat >> ~/Education/Materials/Saved_Links'
 
-### Paths ###
+##### Exports and Paths #####
 
-PATH=${PATH}:~/.bin
+### Editor
+
+export EDITOR=/usr/bin/vim
+
+
+### PATHS
+
+PATH_go=/usr/local/go/bin
+PATH_home_bin=~/.bin
+PATH_vscode=/usr/local/VSCode/bin
+
+PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}
 export PATH
 
-# Pomodoro #
+
+
+##### Utilities #####
+
+### Books
+
+alias book_='book '
+
+book() {
+    local dir="$HOME/Education/Books"
+    local name="$1"
+    local file="$dir/${name}.pdf"
+
+    if [[ -f "$file" ]]; then
+	zathura "$file" &
+    else
+	echo "--- File was not found! ---"
+	echo "Available books:"
+	ls "$dir" | sed 's/\.pdf$//' | column
+    fi
+}
+
+
+### Pomodoro
 function pomo() {
     arg1=$1
     shift
@@ -241,14 +259,3 @@ function pomo() {
         sleep "${sec:?}" && echo "${msg:?}" && notify-send -u critical -t 0 "${msg:?}"
     done
 }
-
-xhost +local:root >/dev/null 2>&1
-
-# Bash won't get SIGWINCH if another process is in the foreground.
-# Enable checkwinsize so that bash will check the terminal size when
-# it regains control.  #65623
-# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
-
-# export QT_SELECT=4
-
-# Enable history appending instead of overwriting.  #139609

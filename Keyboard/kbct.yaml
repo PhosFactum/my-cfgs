@@ -4,10 +4,10 @@
   keymap:
     backspace: capslock
     capslock: backspace
-    compose: esc
+    rightalt: esc
   # Specify layered configurations (much similar to fn+F keys)
-#  layers:
-#    # Specify the modifiers of the layer
+  layers:
+    # Specify the modifiers of the layer
 #    - modifiers: ['rightalt']
 #      keymap:
 #        k: up
@@ -23,4 +23,3 @@
 # 2. Copy the daemon to /etc/systemd/system/ and yaml to /etc/
 # 3. sudo modprobe uinput
 # *. Else open dev's github and watch sth like "RUST BACKTRACE"
-# 2. 

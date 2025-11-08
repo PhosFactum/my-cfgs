@@ -136,4 +136,4 @@ echo "$HOME/.bin/toggle-touchpad"
 
 # Удаляем директорию my-cfgs
 echo "Удаляем директорию $HOME/my-cfgs..."
-rm -rf "$HOME/my-cfgs"
+mv "$HOME/my-cfgs" "$HOME/.my-cfgs"
