@@ -116,6 +116,11 @@ alias lsdaemon='ls /etc/systemd/system/'
 alias bashrc='vim ~/.bashrc; source ~/.bashrc'
 alias zshrc='vim ~/.zshrc; source ~/.zshrc'
 alias tmuxrc='vim ~/.tmux.conf; source ~/.tmux.conf'
+alias nvim='nvim -u ~/.config/nvim/init.lua'
+alias nvimconf='cd ~/.config/nvim'
+alias mvim='nvim -u ~/.config/mvim/init.lua'
+alias mvimconf='cd ~/.config/mvim'
+
 
 
 ### Package managers
@@ -220,7 +225,9 @@ PATH_home_bin=~/.bin
 PATH_vscode=/usr/local/VSCode/bin
 
 PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}
+
 export PATH
+export GOPATH=$HOME/.go
 
 
 
