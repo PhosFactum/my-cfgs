@@ -107,9 +107,8 @@ sudo ln -sf "$CFG_DIR/Keyboard/kbct.yaml" "/etc/kbct.yaml"
 
 # 7. Создание ссылок на скрипты в .bin
 echo "Создаём символические ссылки для скриптов из Shell/bin..."
-for script in "$CFG_DIR/Shell/bin/"*; do
-  [ -f "$script" ] && ln -sf "$script" "$BIN_DIR/$(basename "$script")"
-done
+mkdir $HOME/.bin
+ln -s $CFG_DIR/Shell/.bin/* $BIN_DIR/
 
 # 8. Создание ссылок на директории для nvim
 echo "Создаём символические ссылки для nvim..."

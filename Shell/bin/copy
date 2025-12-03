@@ -1,20 +1,19 @@
 #!/bin/bash
 
-# Проверка, что был передан аргумент (имя файла)
+# Check if second argument is given
 if [ -z "$1" ]; then
-    echo "Использование: copy <имя файла>"
+    echo "Usage: $(basename "$0") <filename>"
     exit 1
 fi
 
-# Проверка существования файла
+# File existence check
 FILE="$1"
 if [ ! -f "$FILE" ]; then
-    echo "Файл $FILE не найден!"
+    echo "File '$FILE' not found!"
     exit 2
 fi
 
-# Копирование содержимого файла в буфер обмена с помощью xclip
-cat "$FILE" | xclip -selection clipboard
+# Copying content into clipboard via 'wl-copy' (faster than xclip)
+wl-copy < "$FILE"
 
-echo "Содержимое файла '$FILE' скопировано в буфер обмена."
-
+echo "File '$FILE' copied into clipboard!"
