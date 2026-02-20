@@ -203,6 +203,7 @@ alias du='du -h'
 alias free='free -m'
 alias untar='tar -zxvf'
 alias wifi='nmcli dev wifi connect'
+alias prox='proxychains'
 
 
 ### Hyprland
@@ -223,8 +224,9 @@ export EDITOR=/usr/bin/vim
 PATH_go=/usr/local/go/bin
 PATH_home_bin=~/.bin
 PATH_vscode=/usr/local/VSCode/bin
+PATH_zed=~/.local/bin
 
-PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}
+PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}:${PATH_zed}
 
 export PATH
 export GOPATH=$HOME/.go

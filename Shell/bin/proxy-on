@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+LOCK="$HOME/.proxy_enabled"
+
+export ALL_PROXY="socks5://phos:JustPhos_0@148.253.212.163:1080"
+export HTTPS_PROXY="$ALL_PROXY"
+export HTTP_PROXY="$ALL_PROXY"
+
+touch "$LOCK"
+
+echo "Proxy enabled"
+exec "$SHELL"

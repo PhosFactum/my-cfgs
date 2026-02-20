@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+LOCK="$HOME/.proxy_enabled"
+
+unset ALL_PROXY
+unset HTTPS_PROXY
+unset HTTP_PROXY
+
+rm -f "$LOCK"
+
+echo "Proxy disabled"
+exec "$SHELL"
