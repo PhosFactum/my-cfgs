@@ -230,7 +230,7 @@ PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}:${PATH_zed}
 
 export PATH
 export GOPATH=$HOME/.go
-
+export PATH=$PATH:$(go env GOPATH)/bin
 
 
 ##### Utilities #####
