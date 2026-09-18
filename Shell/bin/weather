@@ -1,0 +1,129 @@
+#!/bin/bash
+#
+# weather.sh — прогноз погоды через Meteoblue API
+# Использование: ./weather.sh [lat] [lon] [days]
+#
+
+# ============ Конфигурация ============
+APIKEY="${METEOBLUE_APIKEY:-}"
+LAT="${1:-59.89922}"
+LON="${2:-30.41868}"
+DAYS="${3:-7}"
+
+# ============ Цвета ANSI ============
+BOLD=$'\e[1m'
+DIM=$'\e[2m'
+RESET=$'\e[0m'
+RED=$'\e[31m'
+GREEN=$'\e[32m'
+YELLOW=$'\e[33m'
+BLUE=$'\e[34m'
+CYAN=$'\e[36m'
+
+# ============ Проверка ключа ============
+if [ -z "$APIKEY" ]; then
+    echo "${RED}Ошибка: не задан METEOBLUE_APIKEY${RESET}"
+    echo "Запусти: export METEOBLUE_APIKEY='твой_ключ'"
+    exit 1
+fi
+
+# ============ Запрос ============
+URL="https://my.meteoblue.com/packages/basic-day?lat=$LAT&lon=$LON&apikey=$APIKEY"
+response=$(curl -s "$URL")
+
+# Проверка: валидный ли JSON
+if ! jq -e . >/dev/null 2>&1 <<< "$response"; then
+    echo "${RED}Ошибка: API вернул не JSON${RESET}"
+    echo "$response"
+    exit 1
+fi
+
+# Проверка: не вернул ли API ошибку
+if jq -e '.error' >/dev/null 2>&1 <<< "$response"; then
+    echo "${RED}API-ошибка: $(jq -r '.error.message' <<< "$response")${RESET}"
+    exit 1
+fi
+
+# ============ Вспомогательные функции ============
+
+# Округлить float до целого
+to_int() {
+    awk -v n="$1" 'BEGIN { printf "%d", n }'
+}
+
+# Цвет в зависимости от температуры
+temp_color() {
+    local t
+    t=$(to_int "$1")
+    if   [ "$t" -lt 0 ];  then echo "$BLUE"
+    elif [ "$t" -lt 10 ]; then echo "$CYAN"
+    elif [ "$t" -lt 20 ]; then echo "$GREEN"
+    elif [ "$t" -lt 28 ]; then echo "$YELLOW"
+    else                       echo "$RED"
+    fi
+}
+
+# Иконка + текст по pictocode (см. доку Meteoblue — коды могут дополняться)
+pictocode() {
+    case "$1" in
+        1)          echo "☀️  Ясно" ;;
+        2)          echo "☼ Малооблачно" ;;
+        3)          echo "⛅ Переменная облачность" ;;
+        4|16)       echo "☁️  Облачно" ;;
+        5)          echo "≈  Туман" ;;
+        6|7|8)      echo "🌧  Дождь" ;;
+        9|10)       echo "⚡  Гроза" ;;
+        14)         echo "🌧  Ливень" ;;
+        17|18|19|20|21|22|23|24|25) echo "🌨  Снег" ;;
+        *)          echo "❔ Код $1" ;;
+    esac
+}
+
+# День недели по ISO (1=Пн ... 7=Вс) — не зависит от локали
+day_of_week() {
+    case "$(date -d "$1" +%u 2>/dev/null)" in
+        1) echo "Пн" ;;  2) echo "Вт" ;;  3) echo "Ср" ;;
+        4) echo "Чт" ;;  5) echo "Пт" ;;  6) echo "Сб" ;;  7) echo "Вс" ;;
+        *) echo "?" ;;
+    esac
+}
+
+# ============ Шапка ============
+lat=$(jq -r '.metadata.latitude'                <<< "$response")
+lon=$(jq -r '.metadata.longitude'               <<< "$response")
+updated=$(jq -r '.metadata.modelrun_updatetime_utc' <<< "$response")
+tz=$(jq -r '.metadata.timezone_abbrevation'     <<< "$response")
+
+echo
+echo "${BOLD}${CYAN}╭─ ПРОГНОЗ ПОГОДЫ ─────────────────────────${RESET}"
+echo "${CYAN}│${RESET}  ${DIM}Координаты:${RESET}   $lat, $lon"
+echo "${CYAN}│${RESET}  ${DIM}Часовой пояс:${RESET} $tz"
+echo "${CYAN}│${RESET}  ${DIM}Обновлено:${RESET}    $updated UTC"
+echo "${BOLD}${CYAN}╰──────────────────────────────────────────${RESET}"
+echo
+
+# ============ Прогноз по дням ============
+total=$(jq '.data_day.time | length' <<< "$response")
+[ "$DAYS" -gt "$total" ] && DAYS=$total
+
+for ((i = 0; i < DAYS; i++)); do
+    # Достаём все поля одним jq-запросом — эффективнее, чем 10 отдельных
+    read -r date code tmin tmax tmean precip prob wind hum_min hum_max uv < <(
+        jq -r --argjson i "$i" '
+            .data_day |
+            "\(.time[$i]) \(.pictocode[$i]) \(.temperature_min[$i]) \(.temperature_max[$i]) \(.temperature_mean[$i]) \(.precipitation[$i]) \(.precipitation_probability[$i]) \(.windspeed_mean[$i]) \(.relativehumidity_min[$i]) \(.relativehumidity_max[$i]) \(.uvindex[$i])"
+        ' <<< "$response"
+    )
+
+    dow=$(day_of_week "$date")
+    c=$(temp_color "$tmax")
+
+    echo "${BOLD}── $dow · $date ─────────────────────────────${RESET}"
+    echo "   $(pictocode "$code")"
+    printf "   🌡  ${c}%s°C ... %s°C${RESET}  ${DIM}(средняя: %s°C)${RESET}\n" "$tmin" "$tmax" "$tmean"
+    printf "   💧  Осадки: %s мм ${DIM}(вероятность %s%%)${RESET}\n" "$precip" "$prob"
+    printf "   ≋  Ветер: %s м/с\n" "$wind"
+    printf "   ~  Влажность: %s–%s%%\n" "$hum_min" "$hum_max"
+    printf "   ☀️  UV-индекс: %s\n" "$uv"
+    echo
+done

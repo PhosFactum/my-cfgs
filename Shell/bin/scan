@@ -1,0 +1,53 @@
+#!/bin/bash
+# Параллельный сканер портов
+# Использование: ./scan.sh <IP> [start] [end] [timeout] [parallel]
+
+set -uo pipefail
+
+IP="${1:-}"
+START="${2:-1}"
+END="${3:-65535}"
+TIMEOUT="${4:-3}"
+PARALLEL="${5:-300}"
+
+if [[ -z "$IP" ]]; then
+    echo "Использование: $0 <IP> [start_port] [end_port] [timeout] [parallel]"
+    echo "Пример: $0 148.253.212.163 1 65535 3 300"
+    exit 1
+fi
+
+echo "=========================================="
+echo "  Сканирование $IP"
+echo "  Порты:     $START-$END"
+echo "  Таймаут:   ${TIMEOUT}s"
+echo "  Параллель: $PARALLEL"
+echo "  Старт:     $(date '+%H:%M:%S')"
+echo "=========================================="
+echo
+
+scan_port() {
+    local ip="$1"
+    local port="$2"
+    local timeout="$3"
+    if nc -zv -w "$timeout" "$ip" "$port" 2>&1 | grep -q succeeded; then
+        echo "OPEN: $port"
+    fi
+}
+
+export -f scan_port
+
+START_TIME=$(date +%s)
+
+seq "$START" "$END" | xargs -P "$PARALLEL" -I {} bash -c 'scan_port "$0" "$1" "$2"' "$IP" {} "$TIMEOUT" \
+    | tee /tmp/scan_$$.txt
+
+END_TIME=$(date +%s)
+DURATION=$((END_TIME - START_TIME))
+
+echo
+echo "=========================================="
+echo "  Готово за ${DURATION}с"
+echo "  Открытых портов: $(wc -l < /tmp/scan_$$.txt)"
+echo "=========================================="
+
+rm -f /tmp/scan_$$.txt

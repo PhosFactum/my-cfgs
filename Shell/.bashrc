@@ -240,6 +240,7 @@ PATH=${PATH}:${PATH_go}:${PATH_home_bin}:${PATH_vscode}:${PATH_zed}
 export PATH
 export GOPATH=$HOME/.go
 export PATH=$PATH:$(go env GOPATH)/bin
+export METEOBLUE_APIKEY=iZUbnfNdrOB6vlLH
 
 
 ##### Utilities #####
@@ -248,6 +249,7 @@ export PATH=$PATH:$(go env GOPATH)/bin
 
 alias book_='book '
 
+# Функция для удобного открытия книг
 book() {
     local dir="$HOME/Education/Books"
     local name="$1"
@@ -259,6 +261,17 @@ book() {
 	echo "--- File was not found! ---"
 	echo "Available books:"
         ls "$dir" | sed 's/\.pdf$//' | tr ' ' '\n'
+    fi
+}
+
+### Brightnessctl
+
+# Функция для быстрой настройки яркости
+bright() {
+    if [ -z "$1" ]; then
+        echo "Укажите процент яркости. Пример: bright 50"
+    else
+        brightnessctl set "$1"%
     fi
 }
 
