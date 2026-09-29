@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+RAM_THRESHOLD="${RAM_THRESHOLD:?RAM_THRESHOLD is not set}"
+DISK_THRESHOLD="${DISK_THRESHOLD:?DISK_THRESHOLD is not set}"
+CHECK_INTERVAL="${CHECK_INTERVAL:?CHECK_INTERVAL is not set}"
+LOG_TAG="resource-watchdog"
+
+log() {
+    logger -t "$LOG_TAG" "$1"
+}
+
+while true; do
+    ram=$(free | awk '/^Mem:/ {printf "%.0f", $3/$2*100}')
+    disk=$(df / | awk 'NR==2 {gsub("%", ""); print $5}')
+
+    if (( ram >= RAM_THRESHOLD )); then
+	log "HIGH RAM: ${ram}% (threshold ${RAM_THRESHOLD}%)"
+    fi
+
+    if (( disk >= DISK_THRESHOLD )); then
+	log "HIGH DISK: ${disk}% (threshold ${DISK_THRESHOLD}%)"
+    fi
+
+    sleep "$CHECK_INTERVAL"
+done
