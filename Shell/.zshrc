@@ -1,3 +1,4 @@
+export PATH="$HOME/.npm-global/bin:$PATH"
 #####   SYSTEM INFO   #####
 
 # Use powerline

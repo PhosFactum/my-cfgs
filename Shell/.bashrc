@@ -1,3 +1,4 @@
+export PATH="$HOME/.npm-global/bin:$PATH"
 #
 
 # If not running interactively, don't do anything
@@ -213,12 +214,12 @@ alias hyprkeys='vim ~/.config/hypr/keybind.conf'
 
 
 ### Amnezia
-alias awgup='sudo awg-quick up amnezia'
-alias awgdown='sudo awg-quick down amnezia'
-alias awgr='sudo awg-quick restart amnezia'
-alias awgs='sudo awg show'
-alias awglog='sudo journalctl -u awg-quick@amnezia -f'
-alias awgstatus='echo "=== AmneziaWG Status ===" && sudo awg show && echo "" && echo "=== IP Address ===" && curl -s ifconfig.me && echo ""'
+alias proxyup='sudo awg-quick up amnezia'
+alias proxydown='sudo awg-quick down amnezia'
+alias proxyrestart='sudo awg-quick restart amnezia'
+alias proxystatus='sudo awg show'
+alias proxylog='sudo journalctl -u awg-quick@amnezia -f'
+alias proxybstatus='echo "=== AmneziaWG Status ===" && sudo awg show && echo "" && echo "=== IP Address ===" && curl -s ifconfig.me && echo ""'
 
 
 
