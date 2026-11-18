@@ -1,17 +1,16 @@
 #!/bin/bash
 
-# Точное имя устройства из вывода hyprctl devices
 DEVICE="synaptics-tm3471-010"
 LOCK_FILE="/tmp/touchpad.lock"
 
 if [ -f "$LOCK_FILE" ]; then
     # Файл существует => Удаляем его и ВКЛЮЧАЕМ тачпад
-    hyprctl keyword "device[$DEVICE]:enabled" "true"
+    hyprctl eval "hl.device({ name = '$DEVICE', enabled = true })"
     rm "$LOCK_FILE"
     echo "Touchpad: ON"
 else
     # Файла нет => Создаем его и ОТКЛЮЧАЕМ тачпад
-    hyprctl keyword "device[$DEVICE]:enabled" "false"
+    hyprctl eval "hl.device({ name = '$DEVICE', enabled = false })"
     touch "$LOCK_FILE"
     echo "Touchpad: OFF"
 fi
